@@ -25,7 +25,7 @@
     <label>{{ radio }}</label>
     <input type="radio" v-model="radio" />
   </p>
-  <p>{{ valueModel }},{{ numberModel }},{{ city1 }}</p>
+  <p>{{ valueModel }},{{ numberModel }},{{ city }}</p>
 </template>
 
 <script>
