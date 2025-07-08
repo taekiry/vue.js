@@ -53,7 +53,7 @@ export default {
   }, //end of data
 
   mounted() {
-    this.productList = [];
+    //this.productList = [];
   },
 };
 </script>
