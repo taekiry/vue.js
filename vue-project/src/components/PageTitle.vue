@@ -21,6 +21,7 @@ export default {
     };
   },
   props: {
+    //옵션 객체 compostion API로 쓸거임.
     // 상위컴포넌트에서 하위컴포넌트로 값을 전달.
     title: { type: String, default: "페이지 제목" },
     likes: { type: Number, default: 0 },

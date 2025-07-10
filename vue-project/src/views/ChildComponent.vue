@@ -13,14 +13,14 @@ export default {
   },
   methods: {
     sendMessage() {
-      console.log(this)
-      this.$emit("send-message", this.msg);
+      console.log(this);
+      this.$emit("send-message", this.msg); //"send-message" - > 부모컴포넌트의 이벤트(이름)를 호출해서 msg값을 거기다 보냄.
       // this.$parent.msg = this.msg;현재 컴포넌트의 직속 부모 컴포넌트 인스턴스를 참조함.위험할 수 있어서 보통 권장되진 않아!
       // this.$root.msg = this.msg; 현재 Vue 앱에서 최상위(root) Vue 인스턴스를 가리킴
     },
-    sayHello(){
-      console.log("부모에서 호출가능")
-    }
+    sayHello() {
+      console.log("부모에서 호출가능");
+    },
   },
   mounted() {
     //console.log(this.$refs);

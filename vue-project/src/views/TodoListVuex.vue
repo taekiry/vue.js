@@ -1,73 +1,51 @@
 <template>
+  <h3>Vuex 사용하기</h3>
+
   <div id="myDIV" class="header">
     <h2 style="margin: 5px">My To Do List</h2>
-    <input type="text" v-model="msg" placeholder="Title..." />
-    <span v-on:click="newElement" class="addBtn">Add</span>
+    <form @submit.prevent="addNewTodo">
+      <!--prevent 기본기능차단 <form>의 기본 동작은 submit 시 페이지를 새로고침하는 거야 SPA(Single Page App)에서는 이게 불필요하고, 오히려 방해됨.-->
+      <input type="text" v-model="msg" placeholder="Title..." />
+      <button class="addBtn" type="submit">Add</button>
+    </form>
   </div>
-
   <ul id="myUL">
-    <li v-bind:key="todo.id" v-for="todo in todoList">
+    <li v-bind:key="todo.id" v-for="todo in allTodos">
       {{ todo.name }}
     </li>
   </ul>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   data() {
     return {
       msg: "",
-      todoList: [],
     };
   },
-  mounted() {
-    axios({
-      method: "get",
-      url: "http://localhost:8080/todoList",
-    }).then((result) => {
-      this.todoList = result.data;
-      console.log(this.todoList);
-    });
+
+  computed: {
+    allTodos() {
+      return this.$store.getters.todoList;
+    },
   },
+
   methods: {
-    newElement() {
-      // 새로운 요소 추가하기. 신규id 생성하기.
-      // let max_id = this.todoList.reduce((acc, item) => {
-      //   return acc > item.id ? acc : item.id;
-      // }, 0);
-      let max_id = this.todoList[this.todoList.length - 1].id;
-      let todo = { id: max_id + 1, name: this.msg, chk: false }; //새로운요소추가하기.
-      this.todoList.push(todo); // 배열에 추가.
+    addNewTodo() {
+      // (index.js) mutations에 정의된addtodo 호출
+      this.$store.commit("addTodo", this.msg);
     },
-    itemClick(no) {
-      // 스타일 변경하기.
-      for (let todo of this.todoList) {
-        if (todo.id == no) {
-          todo.chk = !todo.chk;
-        }
-      }
-    },
-    removeTodo(no) {
-      axios({
-        method: "delete",
-        url: "http://localhost:8080/todo/" + no,
-      })
-        .then((result) => {
-          console.log(result);
-          // 삭제요청의 성공/실패.
-          if (result.data.errno) {
-            alert("처리실패");
-            return;
-          }
-          // 배열에서 제거하기.
-          this.todoList = this.todoList.filter((item) => item.id != no);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+  },
+
+  mounted() {
+    //console.log(this.$store._state.data.title); //this로 console찍으면 안나옴 외워야됨
+    console.log(this.$store.getters.titling);
+    console.log(this.$store.getters.todoList);
+    this.allTodos = this.$store.getters.todoList;
+  },
+
+  updated() {
+    console.log(this.$store);
   },
 };
 </script>
