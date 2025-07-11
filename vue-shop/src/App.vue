@@ -25,6 +25,10 @@ export default {
 </script>
 
 <style>
+img {
+  width: 30%;
+  height: 30%;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -44,5 +48,34 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(
+    135deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    indigo,
+    violet
+  );
+  background-size: 400% 400%;
+  animation: rainbow 10s ease infinite;
+}
+
+/* 배경 그라디언트 애니메이션 */
+@keyframes rainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a href="#" class="navbar-brand">Soldout</a>
+      <a href="#" class="navbar-brand">BoNoBoNo</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -82,6 +82,20 @@
 </template>
 
 <script>
+//const { Console } = require("console");
+// const output = fs.createWriteStream("./sample/output.log", { flags: "a" }); // flags : "a" (append)호출될때마다 값이 누적됨.
+// const errlog = fs.createWriteStream("./sample/errlog.log", { flags: "a" });
+
+// const logger = new Console({
+//   //console 내장객체에 있는 속성들  stdout, strderr
+//   stdout: output, //standard output
+//   stderr: errlog, //
+// });
+
+// logger.log("로그기록하기");
+// logger.error("에러로그");
+// console.log("end");
+
 /*
   File : HeaderLayout.vue
   Content : 상품목록, 등록화면의 메뉴 출력. 라우팅 정보 셋팅.
@@ -98,8 +112,49 @@ export default {
   },
 
   methods: {
+    kakaoLogin() {
+      window.Kakao.Auth.login({
+        scope: "profile_nickname, account_email",
+        success: this.getKakaoAccount,
+      });
+    },
+    getKakaoAccount() {
+      window.Kakao.API.request({
+        url: "/v2/user/me",
+        success: (res) => {
+          console.log(res);
+          const kakao_account = res.kakao_account;
+          const nickname = kakao_account.profile.nickname;
+          const email = kakao_account.email;
+          console.log(nickname, email);
+          this.login(kakao_account);
+
+          alert("로그인 성공");
+          this.user = { email: email }; //{email: "" }였엇음
+        },
+        fail: (err) => {
+          console.log(err);
+        },
+      });
+    },
     setPage() {},
-    logout() {},
+    async login(account) {
+      //db insert
+      await this.$api("/api/signUp", {
+        param: [
+          { email: account.email, nickname: account.profile.nickname, type: 1 },
+          { email: account.email },
+        ],
+      });
+    },
+    logout() {
+      window.Kakao.Auth.logout((response) => {
+        console.log(response);
+      });
+      alert("로그아웃");
+      this.user = {};
+      this.$router.push({ path: "/list" });
+    },
   },
 };
 </script>
